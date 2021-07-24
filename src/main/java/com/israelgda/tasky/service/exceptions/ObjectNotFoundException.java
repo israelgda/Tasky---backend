@@ -6,9 +6,9 @@ public class ObjectNotFoundException extends RuntimeException{
 	public ObjectNotFoundException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
-	public ObjectNotFoundException(String message) {
-		super(message);
+	
+	public ObjectNotFoundException(Object id) {
+		super("Task não encontrada. Id: " + id);
 	}
 	
 	

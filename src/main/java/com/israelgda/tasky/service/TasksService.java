@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.israelgda.tasky.domain.Tasks;
@@ -24,8 +25,7 @@ public class TasksService {
 	/* Método para encontrar uma task por ID */
 	public Tasks findById(Integer id){
 		Optional<Tasks> task =  repository.findById(id);
-		return task.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado. Id: " + id + ", Tipo: " + Tasks.class.getName()));
+		return task.orElseThrow(() -> new ObjectNotFoundException(id));
 	}
 
 	/* Método para encontrar todos as tasks em aberto e retornar em uma List<> */
@@ -49,7 +49,24 @@ public class TasksService {
 	
 	/*Método DELETE para apagar uma Task no banco*/
 	public void delete(Integer id) {
-		repository.deleteById(id);;
+		try {
+			repository.deleteById(id);
+		} catch(EmptyResultDataAccessException e) {
+			throw new ObjectNotFoundException(id);
+		}
+	}
+
+	public Tasks update(Integer id, Tasks task) {
+		try {
+			Tasks novaTask= findById(id);
+			novaTask.setTitulo(task.getTitulo());
+			novaTask.setDescricao(task.getDescricao());
+			novaTask.setDataFinal(task.getDataFinal());
+			novaTask.setFinalizado(task.isFinalizado());
+			return repository.save(novaTask);
+		} catch (ObjectNotFoundException e) {
+			throw new ObjectNotFoundException(id);
+		}
 	}
 	
 }
