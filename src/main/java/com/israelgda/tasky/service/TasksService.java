@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.israelgda.tasky.domain.Tasks;
 import com.israelgda.tasky.repository.TasksRepository;
+import com.israelgda.tasky.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class TasksService {
@@ -23,7 +24,8 @@ public class TasksService {
 	/* Método para encontrar uma task por ID */
 	public Tasks findById(Integer id){
 		Optional<Tasks> task =  repository.findById(id);
-		return task.orElse(null);
+		return task.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado. Id: " + id + ", Tipo: " + Tasks.class.getName()));
 	}
 
 	/* Método para encontrar todos as tasks em aberto e retornar em uma List<> */
@@ -38,11 +40,16 @@ public class TasksService {
 		return listClosed;
 	}
 	
-	/*Método create para inserir uma Task no banco*/
+	/*Método CREATE para inserir uma Task no banco*/
 	public Tasks create(Tasks task) {
 		/*Setando ID null para evitar increment manual*/
 		task.setId(null);
 		return repository.save(task);
+	}
+	
+	/*Método DELETE para apagar uma Task no banco*/
+	public void delete(Integer id) {
+		repository.deleteById(id);;
 	}
 	
 }
