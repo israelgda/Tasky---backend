@@ -7,5 +7,6 @@ import com.israelgda.tasky.domain.Tasks;
 
 @Repository
 public interface TasksRepository extends JpaRepository<Tasks, Integer> {
+	
 
 }
