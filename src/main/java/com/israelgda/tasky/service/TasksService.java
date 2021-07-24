@@ -23,4 +23,10 @@ public class TasksService {
 		Optional<Tasks> task =  repository.findById(id);
 		return task.orElse(null);
 	}
+
+	public List<Tasks> findAllOpen() {
+		List<Tasks> listOpen = repository.findAllOpen();
+		return listOpen;
+	}
+	
 }

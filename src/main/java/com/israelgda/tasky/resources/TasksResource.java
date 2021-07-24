@@ -33,5 +33,11 @@ public class TasksResource {
 		return ResponseEntity.ok().body(task);
 	}
 	
+	@GetMapping(value = "/tasks/open")
+	public ResponseEntity<List<Tasks>> listAllOpen(){
+		List<Tasks> listOpen = service.findAllOpen();
+		return ResponseEntity.ok().body(listOpen);
+	}
+	
 
 }
