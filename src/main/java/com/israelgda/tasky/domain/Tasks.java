@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class Tasks implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -18,7 +20,10 @@ public class Tasks implements Serializable{
 	
 	private String titulo;
 	private String descricao;
+	
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dataFinal;
+	
 	private boolean finalizado;
 	
 	//Construtores
